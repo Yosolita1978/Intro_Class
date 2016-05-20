@@ -1,30 +1,75 @@
-shopping_list =[]
+""" Whit this program that allows you to have a Shopping List we are using all the data structures that are important in python"""
 
-def add(item):
-    global shopping_list
-    if item.upper() in shopping_list or item.lower() in shopping_list:
-        print "That item already exist"
-        shopping_list.sort()
+general_shopping_list ={}
+
+def add(key):
+    key = key.lower()
+    shopping_list = []
+    if key in general_shopping_list:
+        print "That list %s already exist" %(key)     
     else:
-        shopping_list.append(item)
-        return shopping_list
+        general_shopping_list[key] = shopping_list
+        print "Your list %s was created" %(key)
 
-def remove(item):
-    global shopping_list
-    if item.upper() in shopping_list or item.lower() in shopping_list:
-        shopping_list.remove(item)
-        print "The item was removed"
-        return shopping_list.sort()
-    elif item not in shopping_list:
-        print "That item does not exist"
+def remove(key):
+    key = key.lower()
+    if key in general_shopping_list:
+        del general_shopping_list[key]
+        print "Your list %s has been removed" %(key)     
+    else:
+        print "That list does not exist"
+
+def show_list():
+    print general_shopping_list
+
+def show_a_list(key):
+    global general_shopping_list
+    key = key.lower()
+    if key in general_shopping_list:
+        shopping_list = general_shopping_list[key]
+        shopping_list.sort()
+        print shopping_list
+    else:
+        print "That list doesn't exist"
+
+def add_item(key, item):
+    key = key.lower()
+    item = item.lower()
+    if key in general_shopping_list:
+        #shopping_list = general_shopping_list[key]
+        if item in general_shopping_list[key]:
+            print "This item %s already exist!" %(item)
+        else:
+            general_shopping_list[key].append(item)
+            print "This is your new Shopping List %s " %(general_shopping_list[key])
+    else:
+        print "Sorry, There is no list with that name"
+
+def remove_item(key, item):
+    key = key.lower()
+    item = item.lower()
+    if key in general_shopping_list:
+        shopping_list = general_shopping_list[key]
+        if item in shopping_list:
+            shopping_list.remove(item)
+            print "This item %s has been removed. Here is your list: %s" %(item, shopping_list)
+        else:
+            print "There is not %s item in your list" %(item)
+    else:
+        print "Sorry, There is no list with that name"     
+
+
     
 def menu():
     menu_1 = """
     0 - Main Menu
-    1 - Show current list
-    2 - Add an item to your shopping list
-    3 - Remove an item to your shopping list
-    4 - exit """
+    1 - Show all list
+    2 - Show a specific list
+    3 - Add a new Shopping list
+    4 - Add an item to a shopping list
+    5 - Remove an item from a shopping list
+    6 - Remove a list by nickname
+    7 - Exit """
     print "Hello, This is your menu for the Shopping List. What do you want to do:?"
     option_1 = (raw_input(menu_1))
     return option_1    
@@ -32,24 +77,49 @@ def menu():
 def main():
     option_1 = menu()
     while True:
-        if option_1 == "1":
-            print shopping_list
+        if option_1 == "0":
+            option_1 = menu()
+        elif option_1 == "1":
+            show_list()
             option_1 = menu()
         elif option_1 == "2":
-            add_item = raw_input("Please type your item or X if you're done: ")
-            if add_item.upper() == "X":
+            showme_list = raw_input("Please type what list do you want to see or X to exit: ")
+            if showme_list.upper() == "X":
                 option_1 = menu()
             else:
-                add(add_item)
-            print shopping_list
+                show_a_list(showme_list)
+                option_1 = menu()
         elif option_1 == "3":
-            remove_item = raw_input("Please type your item or X if you're done: ")
-            if remove_item.upper() == "X":
+            addmy_list = raw_input("Please type the name of the list you want to create or X to exit: ")
+            if addmy_list.upper() == "X":
                 option_1 = menu()
             else:
-                remove(remove_item)
-            print shopping_list
+                add(addmy_list)
+                option_1 = menu()
         elif option_1 == "4":
+            my_list = raw_input("Please type the name of the list that you want to modificate: ")
+            my_item = raw_input("Please type the name of the item that you want to add or X to exit: ")
+            if my_item.upper() == "X":
+                option_1 = menu()
+            else:
+                add_item(my_list, my_item)
+                option_1 = menu()
+        elif option_1 == "5":
+            my_list = raw_input("Please type the name of the list that you want to modificate: ")
+            my_item = raw_input("Please type the name of the item that you want to remove or X to exit: ")
+            if my_item.upper() == "X":
+                option_1 = menu()
+            else:
+                remove_item(my_list, my_item)
+                option_1 = menu()
+        elif option_1 == "6":
+            removemy_list = raw_input("Please type the name of the list that you want to remove or X to exit: ")        
+            if removemy_list.upper() == "X":
+                option_1 = menu()
+            else:
+                remove(removemy_list)
+                option_1 = menu()
+        elif option_1 == "7":
             break
 
 
