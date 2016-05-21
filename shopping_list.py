@@ -37,11 +37,11 @@ def add_item(key, item):
     item = item.lower()
     if key in general_shopping_list:
         #shopping_list = general_shopping_list[key]
-        if item in general_shopping_list[key]:
-            print "This item %s already exist!" %(item)
-        else:
+        if item not in general_shopping_list[key]:
             general_shopping_list[key].append(item)
             print "This is your new Shopping List %s " %(general_shopping_list[key])
+        else:
+            print "This item %s already exist!" %(item)
     else:
         print "Sorry, There is no list with that name"
 
@@ -56,7 +56,11 @@ def remove_item(key, item):
         else:
             print "There is not %s item in your list" %(item)
     else:
-        print "Sorry, There is no list with that name"     
+        print "Sorry, There is no list with that name"    
+
+def separated_comma(string):
+    split_string = string.replace(" ","").split(",")
+    return split_string 
 
 
     
@@ -98,19 +102,21 @@ def main():
                 option_1 = menu()
         elif option_1 == "4":
             my_list = raw_input("Please type the name of the list that you want to modificate: ")
-            my_item = raw_input("Please type the name of the item that you want to add or X to exit: ")
-            if my_item.upper() == "X":
+            my_items = raw_input("Please type the items (separated by comma) that you want to add or X to exit: ")
+            if my_items.upper() == "X":
                 option_1 = menu()
             else:
-                add_item(my_list, my_item)
+                for my_item in separated_comma(my_items): 
+                    add_item(my_list, my_item)
                 option_1 = menu()
         elif option_1 == "5":
             my_list = raw_input("Please type the name of the list that you want to modificate: ")
-            my_item = raw_input("Please type the name of the item that you want to remove or X to exit: ")
-            if my_item.upper() == "X":
+            my_items = raw_input("Please type the items (separated by comma) that you want to remove or X to exit: ")
+            if my_items.upper() == "X":
                 option_1 = menu()
             else:
-                remove_item(my_list, my_item)
+                for my_item in separated_comma(my_items): 
+                    add_item(my_list, my_item)
                 option_1 = menu()
         elif option_1 == "6":
             removemy_list = raw_input("Please type the name of the list that you want to remove or X to exit: ")        
