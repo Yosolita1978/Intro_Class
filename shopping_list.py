@@ -20,7 +20,12 @@ def remove(key):
         print "That list does not exist"
 
 def show_list():
-    print general_shopping_list
+    global general_shopping_list
+    for key in general_shopping_list:
+        print "Your list %s has this items: " %(key)
+        for value in general_shopping_list[key]:
+            print "* %s" %(value)
+
 
 def show_a_list(key):
     global general_shopping_list
@@ -62,6 +67,20 @@ def separated_comma(string):
     split_string = string.replace(" ","").split(",")
     return split_string 
 
+def write_list(general_list):
+    with open('/Users/cristina/Source/intro_class_cristina/shopping_list.txt',"w") as my_file:
+        for key,value in general_shopping_list.iteritems():
+            my_file.write(key)
+            my_file.write("=")
+            my_file.write(",".join(value))
+            my_file.write("\n")
+
+def read_list():
+    with open('/Users/cristina/Source/intro_class_cristina/shopping_list.txt') as my_file:
+        for line in my_file:
+            key,value = line.split("=")
+            value = value.replace("\n", "").split(",")
+            general_shopping_list[key]= value
 
     
 def menu():
@@ -70,15 +89,20 @@ def menu():
     1 - Show all list
     2 - Show a specific list
     3 - Add a new Shopping list
-    4 - Add an item to a shopping list
-    5 - Remove an item from a shopping list
+    4 - Add items to a shopping list
+    5 - Remove items from a shopping list
     6 - Remove a list by nickname
-    7 - Exit """
+    7 - Print your list in a file
+    8 - Exit """
     print "Hello, This is your menu for the Shopping List. What do you want to do:?"
     option_1 = (raw_input(menu_1))
     return option_1    
 
 def main():
+    try:
+        read_list()
+    except IOError:
+        pass    
     option_1 = menu()
     while True:
         if option_1 == "0":
@@ -107,7 +131,7 @@ def main():
                 option_1 = menu()
             else:
                 for my_item in separated_comma(my_items): 
-                    add_item(my_list, my_item)
+                    my_shopping_list = add_item(my_list, my_item)
                 option_1 = menu()
         elif option_1 == "5":
             my_list = raw_input("Please type the name of the list that you want to modificate: ")
@@ -116,7 +140,7 @@ def main():
                 option_1 = menu()
             else:
                 for my_item in separated_comma(my_items): 
-                    add_item(my_list, my_item)
+                    my_shopping_list = add_item(my_list, my_item)
                 option_1 = menu()
         elif option_1 == "6":
             removemy_list = raw_input("Please type the name of the list that you want to remove or X to exit: ")        
@@ -126,6 +150,9 @@ def main():
                 remove(removemy_list)
                 option_1 = menu()
         elif option_1 == "7":
+            write_list(my_shopping_list) 
+            option_1 = menu()
+        elif option_1 == "8":
             break
 
 
