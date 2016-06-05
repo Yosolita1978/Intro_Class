@@ -1,5 +1,5 @@
 """ Whit this program that allows you to have a Shopping List we are using all the data structures that are important in python"""
-
+import json 
 general_shopping_list ={}
 
 def add(key):
@@ -65,20 +65,23 @@ def separated_comma(string):
     split_string = string.replace(" ","").split(",")
     return split_string 
 
-def write_list(general_list):
+def write_list():
     with open('/Users/cristina/Source/intro_class_cristina/shopping_list.txt',"w") as my_file:
-        for key,value in general_shopping_list.iteritems():
-            my_file.write(key)
-            my_file.write("=")
-            my_file.write(",".join(value))
-            my_file.write("\n")
+        my_file.write(json.dumps(general_shopping_list))
+        # for key,value in general_shopping_list.iteritems():
+        #     my_file.write(key)
+        #     my_file.write("=")
+        #     my_file.write(",".join(value))
+        #     my_file.write("\n")
 
 def read_list():
+    global general_shopping_list
     with open('/Users/cristina/Source/intro_class_cristina/shopping_list.txt') as my_file:
-        for line in my_file:
-            key,value = line.split("=")
-            value = value.replace("\n", "").split(",")
-            general_shopping_list[key]= value
+        general_shopping_list = json.loads(my_file.read())
+        # for line in my_file:
+        #     key,value = line.split("=")
+        #     value = value.replace("\n", "").split(",")
+        #     general_shopping_list[key]= value
 
     
 def menu():
@@ -117,7 +120,7 @@ def main():
                add(addmy_list)
 
         elif option_1 == "4":
-            my_list = raw_input("Please type the name of the list that you want to modificate: ")
+            my_list = raw_input("Please type the name of the list that you want to modify: ")
             my_items = raw_input("Please type the items (separated by comma) that you want to add or X to exit: ")
             if my_items.upper() != "X":
                 for my_item in separated_comma(my_items): 
@@ -125,7 +128,7 @@ def main():
                 show_a_list(my_list)
 
         elif option_1 == "5":
-            my_list = raw_input("Please type the name of the list that you want to modificate: ")
+            my_list = raw_input("Please type the name of the list that you want to modify: ")
             my_items = raw_input("Please type the items (separated by comma) that you want to remove or X to exit: ")
             if my_items.upper() != "X":
                 for my_item in separated_comma(my_items): 
@@ -138,11 +141,11 @@ def main():
                 remove(removemy_list)
 
         elif option_1 == "7":
-            write_list(my_shopping_list) 
+            write_list() 
 
         elif option_1 == "8":
             break
-            
+
         option_1 = menu()
 
 
